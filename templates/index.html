@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Recommender System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+</head>
+
+<style>
+
+    .text-white{
+        color: white;
+    }
+
+body{
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbCqHon2n7nG8SmAvbXhJAK9pJ8k77dhYG4w&usqp=CAU);
+}
+
+
+a{
+    color: white;
+}
+</style>
+
+<body>
+
+
+    <nav class="navbar" style="background-color:orange">
+
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recommend">Recommend</a></li>
+        </ul>
+    </nav>
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+            <h1 class="text-white" style="font-size: 50px;">Top 50 books based on popularity based filtering</h1>
+            </div>
+
+            {% for i in range(book_name|length)%}
+
+            <div class="col-md-3" style="margin-top:50px ;">
+                <div class="card">
+                    <div class="care-body">
+                        <img class="card-img-top" src="{{image[i]}}">
+                        <p class="text-white">{{book_name[i]}}</p>
+                        <p class="text-white">{{author[i]}}</p>
+                        <p class="text-white">{{votes[i]}}</p>
+                        <p class="text-white">{{rating[i]}}</p>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+</body>
+</html>
