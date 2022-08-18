@@ -1,5 +1,9 @@
 # Book-Recommendation-system
 This notebook demonstrates how to build a collaborative filtering based recommendation system 
+
+The detailed description about the recommendation system can be read in the blog written by me https://medium.com/@gowthamsr37/step-by-step-approach-to-building-a-recommendation-system-a65be5a54045
+
+
 Link to the dataset https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset
 Below are some of the screenshots from the GUI
 ![image](https://user-images.githubusercontent.com/94861619/185192233-bf5697e7-18c6-4a48-8513-8ec008a05fc9.png)
