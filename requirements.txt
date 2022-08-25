@@ -1,4 +1,2 @@
-flask
-numpy
 pandas
-gunicorn
+streamlit
