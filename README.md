@@ -3,6 +3,8 @@ This notebook demonstrates how to build a collaborative filtering based recommen
 
 The detailed description about the recommendation system can be read in the blog written by me https://medium.com/@gowthamsr37/step-by-step-approach-to-building-a-recommendation-system-a65be5a54045
 
+## You can check out the live demo of the application here https://book-recommendation-gowtham.herokuapp.com/
+
 # What is a recommendation system?
 Whenever we visit a shopping mall to buy a new pair of shoes or clothes, we find a dedicated person who helps us with the kind of products we should buy based on our preferences and makes our job simpler. In simple words, he is a recommendation system. But in this modern world, everything is online, and there is so much content on the internet, there are crores of videos on Youtube, and crores of products on Amazon, which makes it difficult for the user to choose. There comes the recommendation system which makes the user's life simple by recommending the next video to watch or a similar product to buy.
 
