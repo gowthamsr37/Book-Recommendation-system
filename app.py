@@ -1,57 +1,71 @@
 import streamlit as st
+import pickle
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
-import streamlit.components.v1 as components
-from streamlit_option_menu import option_menu
-import requests
-from streamlit_lottie import st_lottie
-import webbrowser
-
-st.set_page_config(page_title="AI World", page_icon=":bar_chart:", layout="wide")
-
-from IPL_Analysis import IPL_Analysis
-
-selected_option = option_menu(None, ["Home", "Movie Recommendation", "IPL Analysis", 'House Price Prediction',
-                                     'Whatsapp Chat Analyzer', 'Laptop Price Prediction' ,'Book Recommendation' , 'Data Science Blogs'],
-    icons=['house',"film",  'bar-chart-line' , 'house-door-fill' , 'chat' , 'laptop' , 'book','book-half'],
-    menu_icon="cast", default_index=0, orientation="horizontal")
-
-if selected_option == 'Home':
-
-    def load_lottieurl(url):
-        r = requests.get(url)
-        if r.status_code != 200:
-            return  None
-        return r.json()
 
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.title('Welcome to the World of AI')
-    with col2:
-        lottie_hello = load_lottieurl('https://assets10.lottiefiles.com/private_files/lf30_jyxnt8gq.json')
-        st_lottie(lottie_hello, height = 200 , key = 'hello')
+st.set_page_config(page_title="Book Recommendation", page_icon="📚", layout="wide")
 
-    lottie_ai = load_lottieurl('https://assets4.lottiefiles.com/packages/lf20_zrqthn6o.json')
-    st_lottie(lottie_ai, height = 300 , key = 'coding')
+popular_df = pickle.load(open('popular_books.pkl', 'rb'))
+pt = pickle.load(open('pt.pkl', 'rb'))
+books = pickle.load(open('books.pkl', 'rb'))
+similarity_scores = pickle.load(open('similarity_scores.pkl', 'rb'))
+book_titles = list(pt.index.values)
 
-    st.write("check out this [link](https://share.streamlit.io/mesmith027/streamlit_webapps/main/MC_pi/streamlit_app.py)")
-    link = '[GitHub](http://github.com)'
-    st.markdown(link, unsafe_allow_html=True)
+book_name=list(popular_df['Book-Title'].values),
+author=list(popular_df['Book-Author'].values),
+image=list(popular_df['Image-URL-M'].values),
+votes=list(popular_df['num_of_rating'].values),
+rating=list((round(popular_df['avg_rating'], 2).values))
 
-    col1, col2  = st.columns(2)
-    with col1:
-        st.header('Movie Recommendation')
-        st.markdown("[![Foo](https://cdn-images-1.medium.com/max/1200/1*LkpzdDsOk5rlVXrihGzKVw.png)](https://movie-recmd-system.herokuapp.com/)")
-    with col2:
-        st.header('IPL Win probability predictor')
-        st.markdown("[![Foo](https://cdn-images-1.medium.com/max/1200/1*tCSSyaWVr0STmTEPIB9-VQ.png)](https://ipl-win-probability-ml-model.herokuapp.com/)")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.header('IPL Win probability predictor')
-        st.markdown("[![Foo](https://cdn-images-1.medium.com/max/1200/1*2T4A_TlWshqmE71HPlfrMQ.png)](https://ipl-win-probability-ml-model.herokuapp.com/)")
+
+def recommend(user_input):
+    # user_input = request.form.get('user_input')
+    index = np.where(pt.index == user_input)[0][0]
+    similar_items = sorted(list(enumerate(similarity_scores[index])), key=lambda x: x[1], reverse=True)[1:5]
+
+    data = []
+    for i in similar_items:
+        item = []
+        temp_df = books[books['Book-Title'] == pt.index[i[0]]]
+        item.extend(list(temp_df.drop_duplicates('Book-Title')['Book-Title'].values))
+        item.extend(list(temp_df.drop_duplicates('Book-Title')['Book-Author'].values))
+        item.extend(list(temp_df.drop_duplicates('Book-Title')['Image-URL-M'].values))
+
+        data.append(item)
+
+    return data
+
+
+st.title('Book Recommendation System')
+user_input = st.selectbox('Please type or select a book from the dropdown to get recommendations', book_titles)
+if st.button('Show Recommendation'):
+    st.header('Recommendations for the book:  {}'.format(user_input))
+    data = recommend(user_input)
+    cols = st.columns(4)
+    for c in range(len(cols)):
+        with cols[c]:
+            st.image(data[c][2])
+            st.write(data[c][0])
+            st.write(data[c][1])
+
+st.markdown('___')
+st.markdown('___')
+st.title('Top rated books')
+d=0
+for i in range(12):
+    cols = st.columns(4)
+    for c in range(4):
+        with cols[c]:
+                        st.image(image[0][d])
+                        st.write(book_name[0][d])
+                        st.write(author[0][d])
+                        st.write('avg rating', rating[d])
+                        st.write('total votes', votes[0][d])
+        d=d+1
+    #d = d+4
+
+
 
 # ---- HIDE STREAMLIT STYLE ----
 hide_st_style = """
